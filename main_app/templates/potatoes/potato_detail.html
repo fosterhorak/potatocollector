@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Potato Details</h1>
+
+<div class="card">
+    <div class="card-content">
+      <span class="card-title">{{ potato.name }}</span>
+      
+      <p>Birth Place: {{ potato.birth_place }}</p>
+
+      <p>Length (in): {{ potato.length }}</p>
+
+      <p>Weight (oz): {{ potato.weight }}</p>
+      
+      {% if potato.age > 12 %}
+        <p>Age (wks): {{ potato.age }} (*he's an old fell'r)</p>
+      
+      {% elif potato.age < 3 %}
+        <p>Age (wks): {{ potato.age }} (*he's an young'n)</p>
+
+      {% else %}
+        <p>Age (wks): {{ potato.age }}</p>
+      
+      {% endif %}
+
+      <p>Description: {{ potato.description }}</p>
+    
+    </div>
+</div>
+
+{% endblock %}
+
+
+
