@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Potato
+from .forms import CleaningForm
 
 # Create your views here.
 
@@ -24,7 +25,11 @@ def potatoes_index(request):
 
 def potato_detail(request, potato_id):
   potato = Potato.objects.get(id=potato_id)
-  return render(request, 'potatoes/potato_detail.html', {'potato': potato})
+  cleaning_form = CleaningForm()
+  return render(request, 'potatoes/potato_detail.html', {
+    'potato': potato, 
+    'cleaning_form': cleaning_form
+  })
 
 class PotatoCreate(CreateView):
   model = Potato
@@ -37,3 +42,17 @@ class PotatoUpdate(UpdateView):
 class PotatoDelete(DeleteView):
   model = Potato
   success_url = '/potatoes/'
+
+def add_cleaning(request, potato_id):
+  # create a model form instance using the data in request.POST
+  form = CleaningForm(request.POST)
+  # validate that the form is good
+  if form.is_valid():
+    # can't save to the db until the cat_id is assigned
+    new_cleaning = form.save(commit=False)
+    # now assign the cat_id
+    new_cleaning.potato_id = potato_id
+    new_cleaning.save()
+  return redirect('potato_detail', potato_id=potato_id)
+
+ 
