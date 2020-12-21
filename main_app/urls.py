@@ -14,6 +14,8 @@ urlpatterns = [
     
     path('potatoes/<int:potato_id>/assoc_accessory/<int:accessory_id>/', views.assoc_accessory, name='assoc_accessory'),
     path('potatoes/<int:potato_id>/de_assoc_accessory/<int:accessory_id>/', views.de_assoc_accessory, name='de_assoc_accessory'),
+    path('potatoes/<int:potato_id>/clear_all_accessories/', views.clear_all_accessories, name='clear_all_accessories'),
+
 
     path('accessories/', views.AccessoryList.as_view(), name='accessories_index'),
     path('accessories/<int:pk>/', views.AccessoryDetail.as_view(), name='accessories_detail'),

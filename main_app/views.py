@@ -58,12 +58,16 @@ def assoc_accessory(request, potato_id, accessory_id):
   Potato.objects.get(id=potato_id).accessories.add(accessory_id)
   return redirect('potato_detail', potato_id=potato_id)
 
-#removing an access
+#removing an accessory
 def de_assoc_accessory(request, potato_id, accessory_id):
   # Note that you can pass a accessory's id instead of the whole object
   Potato.objects.get(id=potato_id).accessories.remove(accessory_id)
   return redirect('potato_detail', potato_id=potato_id)
 
+#remove all accessories
+def clear_all_accessories(request, potato_id):
+  Potato.objects.get(id=potato_id).accessories.clear()
+  return redirect('potato_detail', potato_id=potato_id)
 
 class AccessoryList(ListView):
   model = Accessory

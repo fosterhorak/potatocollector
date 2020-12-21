@@ -78,6 +78,13 @@
           </div>
         </div>
       {% endfor %}
+      <!-- clear all associated accessories-->
+      <div>
+        <form action="{% url 'clear_all_accessories' potato.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn">Remove All</button>
+        </form>
+      </div>
     {% else %}
       <h5>No Accessories :(</h5>
     {% endif %}
