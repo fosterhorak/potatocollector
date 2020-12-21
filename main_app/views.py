@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Potato
+from django.views.generic import ListView, DetailView
+from .models import Potato, Accessory
 from .forms import CleaningForm
 
 # Create your views here.
 
-# Add the following import
-from django.http import HttpResponse
-# main_app/views.py
-from django.shortcuts import render
+# # Add the following import
+# from django.http import HttpResponse
+# # main_app/views.py
+# from django.shortcuts import render
 
 
 # Define the home view
@@ -25,10 +26,12 @@ def potatoes_index(request):
 
 def potato_detail(request, potato_id):
   potato = Potato.objects.get(id=potato_id)
+  accessories_potato_doesnt_have = Accessory.objects.exclude(id__in = potato.accessories.all().values_list('id'))
   cleaning_form = CleaningForm()
   return render(request, 'potatoes/potato_detail.html', {
     'potato': potato, 
-    'cleaning_form': cleaning_form
+    'cleaning_form': cleaning_form,
+    'accessories': accessories_potato_doesnt_have
   })
 
 class PotatoCreate(CreateView):
@@ -55,4 +58,26 @@ def add_cleaning(request, potato_id):
     new_cleaning.save()
   return redirect('potato_detail', potato_id=potato_id)
 
- 
+def assoc_accessory(request, potato_id, accessory_id):
+  # Note that you can pass a toy's id instead of the whole object
+  Potato.objects.get(id=potato_id).accessories.add(accessory_id)
+  return redirect('potato_detail', potato_id=potato_id)
+
+
+class AccessoryList(ListView):
+  model = Accessory
+
+class AccessoryDetail(DetailView):
+  model = Accessory
+
+class AccessoryCreate(CreateView):
+  model = Accessory
+  fields = '__all__'
+
+class AccessoryUpdate(UpdateView):
+  model = Accessory
+  fields = ['name', 'description']
+
+class AccessoryDelete(DeleteView):
+  model = Accessory
+  success_url = '/accessories/'
