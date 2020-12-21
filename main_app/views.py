@@ -6,11 +6,6 @@ from .forms import CleaningForm
 
 # Create your views here.
 
-# # Add the following import
-# from django.http import HttpResponse
-# # main_app/views.py
-# from django.shortcuts import render
-
 
 # Define the home view
 def home(request):
@@ -51,16 +46,22 @@ def add_cleaning(request, potato_id):
   form = CleaningForm(request.POST)
   # validate that the form is good
   if form.is_valid():
-    # can't save to the db until the cat_id is assigned
+    # can't save to the db until the potato_id is assigned
     new_cleaning = form.save(commit=False)
-    # now assign the cat_id
+    # now assign the potato_id
     new_cleaning.potato_id = potato_id
     new_cleaning.save()
   return redirect('potato_detail', potato_id=potato_id)
 
 def assoc_accessory(request, potato_id, accessory_id):
-  # Note that you can pass a toy's id instead of the whole object
+  # Note that you can pass a accessory's id instead of the whole object
   Potato.objects.get(id=potato_id).accessories.add(accessory_id)
+  return redirect('potato_detail', potato_id=potato_id)
+
+#removing an access
+def de_assoc_accessory(request, potato_id, accessory_id):
+  # Note that you can pass a accessory's id instead of the whole object
+  Potato.objects.get(id=potato_id).accessories.remove(accessory_id)
   return redirect('potato_detail', potato_id=potato_id)
 
 
