@@ -31,7 +31,7 @@ def potato_detail(request, potato_id):
 
 class PotatoCreate(CreateView):
   model = Potato
-  fields = '__all__'
+  fields = ['name', 'birth_place', 'length', 'weight', 'age', 'description']
 
 class PotatoUpdate(UpdateView):
   model = Potato
